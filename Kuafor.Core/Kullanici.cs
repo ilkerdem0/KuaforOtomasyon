@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Kuafor.Core
+{
+    // public class Kullanici'yı public abstract class yapıyoruz.
+    // Abstract, bu sınıftan tek başına nesne yaratılamayacağı,
+    // sadece miras alınabileceği anlamına gelir.
+    public abstract class Kullanici
+    {
+        public int Id { get; set; } 
+        public string Ad { get; set; } = string.Empty;
+        public string Soyad { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Telefon { get; set; } = string.Empty;
+        public string SifreHash { get; set; } = string.Empty; // Şifreyi asla düz metin tutmayız
+    }
+}
