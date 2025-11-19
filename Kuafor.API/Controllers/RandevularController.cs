@@ -60,5 +60,11 @@ namespace Kuafor.API.Controllers
             // İleride burası tek bir randevuyu getirmek için doldurulabilir
             return Ok(new { Mesaj = $"Randevu {id} getirildi (simülasyon)" });
         }
+        [HttpGet("listele")]
+        public async Task<IActionResult> TumRandevulariListele()
+        {
+            var randevular = await _randevuService.RandevulariGetirAsync();
+            return Ok(randevular);
+        }
     }
 }

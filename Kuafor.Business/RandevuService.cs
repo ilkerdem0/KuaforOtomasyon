@@ -1,85 +1,95 @@
-﻿using Kuafor.Core; // Modellerimizi (Randevu, Kullanici vb.) bilmesi için
-using Kuafor.DataAccess; // DbContext'i bilmesi için
-using Microsoft.EntityFrameworkCore; // .AnyAsync, .FindAsync vb. EF komutları için
-using System; // Exception ve DateTime için
-using System.Threading.Tasks; // async/await (Task) için
+﻿using Kuafor.Core; // Modeller (Randevu, Kullanici vb.)
+using Kuafor.Core.DTOs; // DTO'lar (RandevuListDto) -> İşte bu eksikti!
+using Kuafor.DataAccess; // DbContext
+using Microsoft.EntityFrameworkCore; // .Include, .ToListAsync vb.
+using System; // Exception, DateTime
+using System.Collections.Generic; // List<>
+using System.Linq; // .Select, .OrderBy vb.
+using System.Threading.Tasks; // async/await
 
 namespace Kuafor.Business
 {
     public class RandevuService
     {
-        // 1. Veritabanı context'ini tutacak özel, salt okunur bir alan
         private readonly ApplicationDbContext _context;
 
-        // 2. Constructor (Yapıcı Metot)
         public RandevuService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // METOT 1: Randevu Oluşturma (Halka Açık Metot)
-        // Dışarıdan (API'den) bu metot çağrılacak
+        // METOT 1: Randevu Oluşturma
         public async Task<Randevu> RandevuOlusturAsync(int musteriId, int calisanId, int hizmetId, DateTime baslangic)
         {
-            // 1. Hizmet bilgilerini veritabanından al (Süre ve Ücret için)
             var hizmet = await _context.Hizmetler.FindAsync(hizmetId);
             if (hizmet == null)
             {
                 throw new Exception("Geçersiz hizmet seçimi.");
             }
 
-            // 2. ÇAKIŞMA KONTROLÜNÜ ÇAĞIR
             bool cakismaVar = await CakismaVarMiAsync(calisanId, baslangic, hizmet.SureDakika);
             if (cakismaVar)
             {
                 throw new Exception("Seçilen tarih ve saatte çakışma mevcut. Lütfen başka bir zaman seçin.");
             }
 
-            // 3. (Gelişmiş Kontrol) Çalışanın uygunluk zamanlarına bakılabilir
-            // ... (Bu, ödevin sonraki aşaması olabilir)
-
-            // 4. Tüm kontrollerden geçtiyse, Randevu nesnesini oluştur
-            // NOT: HATA BÜYÜK İHTİMALLE BU BLOKTAYDI
             var yeniRandevu = new Randevu
             {
                 MusteriId = musteriId,
                 CalisanId = calisanId,
                 HizmetId = hizmetId,
                 BaslangicTarihSaati = baslangic,
-                ToplamSureDakika = hizmet.SureDakika, // Hizmetten al
-                ToplamUcret = hizmet.Ucret, // Hizmetten al
-                Durum = RandevuDurumu.OnayBekliyor // Onay mekanizması için ilk durum
+                ToplamSureDakika = hizmet.SureDakika,
+                ToplamUcret = hizmet.Ucret,
+                Durum = RandevuDurumu.OnayBekliyor
             };
 
-            // 5. Veritabanına ekle ve kaydet
             await _context.Randevular.AddAsync(yeniRandevu);
             await _context.SaveChangesAsync();
 
-            return yeniRandevu; // Oluşturulan randevuyu geri döndür
+            return yeniRandevu;
         }
 
-
-        // METOT 2: Çakışma Kontrolü (Özel Metot - Sadece bu sınıf kullanabilir)
+        // METOT 2: Çakışma Kontrolü
         private async Task<bool> CakismaVarMiAsync(int calisanId, DateTime yeniRandevuBaslangic, int yeniRandevuSuresi)
         {
-            // 1. Yeni randevunun bitiş zamanını hesapla
             DateTime yeniRandevuBitis = yeniRandevuBaslangic.AddMinutes(yeniRandevuSuresi);
 
-            // 2. Veritabanında çakışan bir kayıt var mı diye KONTROL ET
-            // (EF Core bu sorguyu SQL'e çevirecek)
             var cakismaVar = await _context.Randevular
                 .Where(r =>
-                    r.CalisanId == calisanId && // Sadece bu çalışan için
-                    r.Durum != RandevuDurumu.IptalEdildi && // İptal edilmemiş randevular arasında
-
-                    // Klasik Çakışma Mantığı:
-                    // (YeniBaşlangıç < MevcutBitiş) AND (YeniBitiş > MevcutBaşlangtç)
+                    r.CalisanId == calisanId &&
+                    r.Durum != RandevuDurumu.IptalEdildi &&
                     (yeniRandevuBaslangic < r.BaslangicTarihSaati.AddMinutes(r.ToplamSureDakika)) &&
                     (yeniRandevuBitis > r.BaslangicTarihSaati)
                 )
-                .AnyAsync(); // Bu koşula uyan EN AZ BİR kayıt varsa "true" döner
+                .AnyAsync();
 
-            return cakismaVar; // true (çakışma var) veya false (çakışma yok)
+            return cakismaVar;
+        }
+
+        // METOT 3: Randevuları Listeleme (YENİ EKLENEN KISIM)
+        public async Task<List<RandevuListDto>> RandevulariGetirAsync()
+        {
+            var randevular = await _context.Randevular
+                .Include(r => r.Musteri)  // Müşteri tablosunu bağla
+                .Include(r => r.Calisan)  // Çalışan tablosunu bağla
+                .Include(r => r.Hizmet)   // Hizmet tablosunu bağla
+                .OrderByDescending(r => r.BaslangicTarihSaati) // En yeni tarih en üstte
+                .Select(r => new RandevuListDto
+                {
+                    Id = r.Id,
+                    Baslangic = r.BaslangicTarihSaati,
+                    Bitis = r.BaslangicTarihSaati.AddMinutes(r.ToplamSureDakika),
+                    // Ad ve Soyad'ı birleştirip tek string yapıyoruz:
+                    MusteriAdi = r.Musteri.Ad + " " + r.Musteri.Soyad,
+                    CalisanAdi = r.Calisan.Ad + " " + r.Calisan.Soyad,
+                    HizmetAdi = r.Hizmet.Ad,
+                    Ucret = r.ToplamUcret,
+                    Durum = r.Durum.ToString()
+                })
+                .ToListAsync();
+
+            return randevular;
         }
     }
 }
