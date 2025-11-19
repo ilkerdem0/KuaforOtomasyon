@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 // Ýþ mantýðý servislerimizi buraya kaydediyoruz
 builder.Services.AddScoped<RandevuService>();
+builder.Services.AddScoped<YonetimService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
