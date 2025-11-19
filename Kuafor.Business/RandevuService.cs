@@ -91,5 +91,26 @@ namespace Kuafor.Business
 
             return randevular;
         }
+        // METOT 4: Randevu Onaylama
+        public async Task<bool> RandevuOnaylaAsync(int id)
+        {
+            var randevu = await _context.Randevular.FindAsync(id);
+            if (randevu == null) return false; // Randevu bulunamadı
+
+            randevu.Durum = RandevuDurumu.Onaylandi;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        // METOT 5: Randevu İptal Etme
+        public async Task<bool> RandevuIptalEtAsync(int id)
+        {
+            var randevu = await _context.Randevular.FindAsync(id);
+            if (randevu == null) return false;
+
+            randevu.Durum = RandevuDurumu.IptalEdildi;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

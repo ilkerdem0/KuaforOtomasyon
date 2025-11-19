@@ -66,5 +66,26 @@ namespace Kuafor.API.Controllers
             var randevular = await _randevuService.RandevulariGetirAsync();
             return Ok(randevular);
         }
+        // Randevu Onaylama Endpoint'i
+        // PUT: /api/randevular/{id}/onayla
+        [HttpPut("{id}/onayla")]
+        public async Task<IActionResult> RandevuOnayla(int id)
+        {
+            var sonuc = await _randevuService.RandevuOnaylaAsync(id);
+            if (!sonuc) return NotFound("Randevu bulunamadı.");
+
+            return Ok(new { mesaj = "Randevu başarıyla onaylandı." });
+        }
+
+        // Randevu İptal Endpoint'i
+        // PUT: /api/randevular/{id}/iptal
+        [HttpPut("{id}/iptal")]
+        public async Task<IActionResult> RandevuIptalEt(int id)
+        {
+            var sonuc = await _randevuService.RandevuIptalEtAsync(id);
+            if (!sonuc) return NotFound("Randevu bulunamadı.");
+
+            return Ok(new { mesaj = "Randevu iptal edildi." });
+        }
     }
 }
