@@ -2,6 +2,7 @@
 using Kuafor.Business;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Kuafor.Core.DTOs; // Yeni taşıdığımız DTO'yu görsün
 
 namespace Kuafor.API.Controllers
 {
@@ -46,6 +47,22 @@ namespace Kuafor.API.Controllers
         {
             var hizmetler = await _yonetimService.TumHizmetleriGetirAsync();
             return Ok(hizmetler);
+        }
+
+        // --- ÇALIŞAN ENDPOINTLERİ ---
+
+        [HttpPost("calisan-ekle")]
+        public async Task<IActionResult> CalisanEkle([FromBody] CalisanCreateDto dto)
+        {
+            var calisan = await _yonetimService.CalisanEkleAsync(dto);
+            return Ok(calisan);
+        }
+
+        [HttpGet("calisanlar")]
+        public async Task<IActionResult> CalisanlariGetir()
+        {
+            var calisanlar = await _yonetimService.TumCalisanlariGetirAsync();
+            return Ok(calisanlar);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Kuafor.Core;
+using Kuafor.Core.DTOs;
 using Kuafor.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -55,6 +56,48 @@ namespace Kuafor.Business
         public async Task<List<Hizmet>> TumHizmetleriGetirAsync()
         {
             return await _context.Hizmetler.ToListAsync();
+        }
+        // --- ÇALIŞAN İŞLEMLERİ ---
+
+        public async Task<Calisan> CalisanEkleAsync(CalisanCreateDto dto)
+        {
+            // 1. Önce çalışanın temel bilgilerini oluştur
+            var yeniCalisan = new Calisan
+            {
+                Ad = dto.Ad,
+                Soyad = dto.Soyad,
+                Email = dto.Email,
+                Telefon = dto.Telefon,
+                SifreHash = "12345", // Varsayılan şifre (İleride değiştirilebilir)
+                SalonId = dto.SalonId,
+                AktifMi = true
+            };
+
+            // 2. Seçilen uzmanlık alanlarını (Hizmetleri) bul ve ekle
+            if (dto.UzmanlikHizmetIdleri != null && dto.UzmanlikHizmetIdleri.Count > 0)
+            {
+                // Veritabanından bu ID'lere sahip hizmetleri bul
+                var secilenHizmetler = await _context.Hizmetler
+                    .Where(h => dto.UzmanlikHizmetIdleri.Contains(h.Id))
+                    .ToListAsync();
+
+                // Çalışanın uzmanlık listesine ekle
+                yeniCalisan.Uzmanliklar = secilenHizmetler;
+            }
+
+            // 3. Kaydet
+            await _context.Calisanlar.AddAsync(yeniCalisan);
+            await _context.SaveChangesAsync();
+            return yeniCalisan;
+        }
+
+        // Çalışanları getirirken uzmanlıklarını da (Include) getirelim
+        public async Task<List<Calisan>> TumCalisanlariGetirAsync()
+        {
+            return await _context.Calisanlar
+                .Include(c => c.Uzmanliklar) // Uzmanlık bilgisini de yükle
+                .Include(c => c.Salon)       // Salon bilgisini de yükle
+                .ToListAsync();
         }
     }
 }
