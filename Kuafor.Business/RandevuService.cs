@@ -143,5 +143,30 @@ namespace Kuafor.Business
 
             return uygunlukVar;
         }
+        // METOT 7: Müşteri Bazlı Randevu Listeleme
+        // Müşterinin kendi geçmişini görmesi için gereklidir.
+        public async Task<List<RandevuListDto>> MusteriRandevulariniGetirAsync(int musteriId)
+        {
+            var randevular = await _context.Randevular
+                .Where(r => r.MusteriId == musteriId) // Sadece bu müşterinin kayıtları
+                .Include(r => r.Musteri)
+                .Include(r => r.Calisan)
+                .Include(r => r.Hizmet)
+                .OrderByDescending(r => r.BaslangicTarihSaati)
+                .Select(r => new RandevuListDto
+                {
+                    Id = r.Id,
+                    Baslangic = r.BaslangicTarihSaati,
+                    Bitis = r.BaslangicTarihSaati.AddMinutes(r.ToplamSureDakika),
+                    MusteriAdi = r.Musteri.Ad + " " + r.Musteri.Soyad,
+                    CalisanAdi = r.Calisan.Ad + " " + r.Calisan.Soyad,
+                    HizmetAdi = r.Hizmet.Ad,
+                    Ucret = r.ToplamUcret,
+                    Durum = r.Durum.ToString()
+                })
+                .ToListAsync();
+
+            return randevular;
+        }
     }
 }

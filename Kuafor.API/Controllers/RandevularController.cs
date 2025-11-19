@@ -87,5 +87,13 @@ namespace Kuafor.API.Controllers
 
             return Ok(new { mesaj = "Randevu iptal edildi." });
         }
+        // Müşteri Randevuları Endpoint'i
+        // GET: /api/randevular/musteri/{id}
+        [HttpGet("musteri/{id}")]
+        public async Task<IActionResult> MusteriRandevulari(int id)
+        {
+            var randevular = await _randevuService.MusteriRandevulariniGetirAsync(id);
+            return Ok(randevular);
+        }
     }
 }
