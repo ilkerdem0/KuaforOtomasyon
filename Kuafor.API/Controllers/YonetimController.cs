@@ -64,5 +64,13 @@ namespace Kuafor.API.Controllers
             var calisanlar = await _yonetimService.TumCalisanlariGetirAsync();
             return Ok(calisanlar);
         }
+        // --- UYGUNLUK ENDPOINT ---
+
+        [HttpPost("uygunluk-ekle")]
+        public async Task<IActionResult> UygunlukEkle([FromBody] UygunlukCreateDto dto)
+        {
+            var sonuc = await _yonetimService.UygunlukEkleAsync(dto);
+            return Ok(sonuc);
+        }
     }
 }

@@ -99,5 +99,29 @@ namespace Kuafor.Business
                 .Include(c => c.Salon)       // Salon bilgisini de yükle
                 .ToListAsync();
         }
+        // --- UYGUNLUK (MESAİ) İŞLEMLERİ ---
+
+        public async Task<UygunlukZamani> UygunlukEkleAsync(UygunlukCreateDto dto)
+        {
+            var uygunluk = new UygunlukZamani
+            {
+                CalisanId = dto.CalisanId,
+                Gun = dto.Gun,
+                BaslangicSaati = dto.BaslangicSaati,
+                BitisSaati = dto.BitisSaati
+            };
+
+            await _context.UygunlukZamanlari.AddAsync(uygunluk);
+            await _context.SaveChangesAsync();
+            return uygunluk;
+        }
+
+        // Çalışanın uygunluklarını getiren metot (İsteğe bağlı kontrol için)
+        public async Task<List<UygunlukZamani>> CalisanUygunluklariniGetirAsync(int calisanId)
+        {
+            return await _context.UygunlukZamanlari
+                .Where(u => u.CalisanId == calisanId)
+                .ToListAsync();
+        }
     }
 }
