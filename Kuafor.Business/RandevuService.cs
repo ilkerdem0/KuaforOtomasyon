@@ -27,6 +27,17 @@ namespace Kuafor.Business
                 throw new Exception("Geçersiz hizmet seçimi.");
             }
 
+            // --- YENİ EKLENEN MESAİ KONTROLÜ ---
+            // 1.5. Çalışan o saatte çalışıyor mu?
+            bool calisanMusait = await CalisanMusaitMiAsync(calisanId, baslangic, hizmet.SureDakika);
+            if (!calisanMusait)
+            {
+                throw new Exception("Çalışan belirtilen tarih ve saatte hizmet vermemektedir (Mesai dışı).");
+            }
+            // -----------------------------------
+
+          
+
             bool cakismaVar = await CakismaVarMiAsync(calisanId, baslangic, hizmet.SureDakika);
             if (cakismaVar)
             {
@@ -111,6 +122,26 @@ namespace Kuafor.Business
             randevu.Durum = RandevuDurumu.IptalEdildi;
             await _context.SaveChangesAsync();
             return true;
+        }
+        // METOT 6: Mesai Kontrolü (Özel Metot)
+        private async Task<bool> CalisanMusaitMiAsync(int calisanId, DateTime baslangic, int sureDakika)
+        {
+            // 1. İstenen randevunun gününü ve saat aralığını al
+            var istenenGun = baslangic.DayOfWeek; // Örn: Pazartesi
+            var istenenBaslangicSaati = baslangic.TimeOfDay; // Örn: 10:00
+            var istenenBitisSaati = istenenBaslangicSaati.Add(TimeSpan.FromMinutes(sureDakika)); // Örn: 10:30
+
+            // 2. Veritabanında bu kurala uyan bir "Uygunluk" kaydı var mı?
+            // Kural: Çalışan o gün çalışıyor mu VE randevu saatleri mesai içine sığıyor mu?
+            var uygunlukVar = await _context.UygunlukZamanlari
+                .AnyAsync(u =>
+                    u.CalisanId == calisanId &&
+                    u.Gun == istenenGun &&
+                    u.BaslangicSaati <= istenenBaslangicSaati && // Mesai randevudan önce (veya tam o an) başlamalı
+                    u.BitisSaati >= istenenBitisSaati // Mesai randevudan sonra (veya tam o an) bitmeli
+                );
+
+            return uygunlukVar;
         }
     }
 }
