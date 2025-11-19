@@ -72,5 +72,13 @@ namespace Kuafor.API.Controllers
             var sonuc = await _yonetimService.UygunlukEkleAsync(dto);
             return Ok(sonuc);
         }
+        // Belirli bir salondaki çalışanları getir
+        // GET: /api/Yonetim/salon/{salonId}/calisanlar
+        [HttpGet("salon/{salonId}/calisanlar")]
+        public async Task<IActionResult> SalonCalisanlari(int salonId)
+        {
+            var calisanlar = await _yonetimService.SalonCalisanlariniGetirAsync(salonId);
+            return Ok(calisanlar);
+        }
     }
 }

@@ -123,5 +123,21 @@ namespace Kuafor.Business
                 .Where(u => u.CalisanId == calisanId)
                 .ToListAsync();
         }
+        // --- SALON BAZLI ÇALIŞAN LİSTELEME ---
+
+        public async Task<List<CalisanListDto>> SalonCalisanlariniGetirAsync(int salonId)
+        {
+            return await _context.Calisanlar
+                .Where(c => c.SalonId == salonId) // Sadece seçilen salonun çalışanları
+                .Include(c => c.Uzmanliklar)      // Uzmanlıklarını da yükle
+                .Select(c => new CalisanListDto
+                {
+                    Id = c.Id,
+                    AdSoyad = c.Ad + " " + c.Soyad,
+                    // Uzmanlık isimlerini virgülle birleştirip tek string yapıyoruz:
+                    Uzmanliklar = string.Join(", ", c.Uzmanliklar.Select(u => u.Ad))
+                })
+                .ToListAsync();
+        }
     }
 }
