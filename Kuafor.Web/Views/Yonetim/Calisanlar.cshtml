@@ -1,0 +1,50 @@
+﻿@model List<Kuafor.Core.Calisan>
+@{
+    ViewData["Title"] = "Çalışan Listesi";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-success">👨‍💼 Çalışan Listesi</h2>
+        <a href="/Yonetim/CalisanEkle" class="btn btn-success btn-sm">+ Yeni Çalışan</a>
+    </div>
+    <hr />
+    <table class="table table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Ad Soyad</th>
+                <th>Salon</th>
+                <th>Uzmanlıklar</th>
+                <th>İletişim</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Ad @item.Soyad</td>
+                    <td>
+                        @if (item.Salon != null)
+                        {
+                            <span class="badge bg-info text-dark">@item.Salon.Ad</span>
+                        }
+                        else
+                        {
+
+                            <span class="text-muted">-</span>
+                        }
+                    </td>
+                    <td>
+                        @foreach (var uzm in item.Uzmanliklar)
+                        {
+                            <span class="badge bg-secondary">@uzm.Ad</span>
+                        }
+                    </td>
+                    <td>@item.Email <br /> <small>@item.Telefon</small></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

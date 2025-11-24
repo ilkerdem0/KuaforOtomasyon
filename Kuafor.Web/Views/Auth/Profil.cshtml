@@ -1,0 +1,53 @@
+﻿@model Kuafor.Core.Kullanici
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">👤 Profil Bilgilerim</h4>
+        </div>
+        <div class="card-body">
+
+            @if (ViewBag.Mesaj != null)
+            {
+                <div class="alert alert-success">@ViewBag.Mesaj</div>
+            }
+
+            <form asp-action="ProfilGuncelle" method="post">
+                <div class="row mb-3">
+                    <div class="col">
+                        <label>Ad</label>
+                        <input type="text" name="ad" value="@Model.Ad" class="form-control" required />
+                    </div>
+                    <div class="col">
+                        <label>Soyad</label>
+                        <input type="text" name="soyad" value="@Model.Soyad" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>E-Posta (Değiştirilemez)</label>
+                    <input type="text" value="@Model.Email" class="form-control" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label>Telefon</label>
+                    <input type="text" name="telefon" value="@Model.Telefon" class="form-control" />
+                </div>
+
+                <hr />
+
+                <div class="mb-3">
+                    <label>Yeni Şifre (Değiştirmek istemiyorsanız boş bırakın)</label>
+                    <input type="password" name="yeniSifre" class="form-control" placeholder="******" />
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Bilgilerimi Güncelle</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Ana Sayfaya Dön</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@model List<Kuafor.Core.Musteri>
+@{
+    ViewData["Title"] = "Müşteri Listesi";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-primary">👥 Müşteri Listesi</h2>
+        <a href="/Yonetim/MusteriEkle" class="btn btn-primary btn-sm">+ Yeni Müşteri</a>
+    </div>
+    <hr />
+    <table class="table table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Ad Soyad</th>
+                <th>E-Posta</th>
+                <th>Telefon</th>
+                <th>Şifre</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Ad @item.Soyad</td>
+                    <td>@item.Email</td>
+                    <td>@item.Telefon</td>
+
+                    <td class="text-muted">
+                        <small>@item.SifreHash</small>
+                    </td>
+
+                    <td>
+                        <a href="/Yonetim/MusteriDuzenle/@item.Id" class="btn btn-sm btn-warning text-dark">
+                            ✏️ Düzenle
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

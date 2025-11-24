@@ -1,0 +1,33 @@
+﻿@model List<Kuafor.Core.Hizmet>
+@{
+    ViewData["Title"] = "Hizmet Listesi";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-info">✂️ Hizmet Listesi</h2>
+        <a href="/Yonetim/HizmetEkle" class="btn btn-info btn-sm text-white">+ Yeni Hizmet</a>
+    </div>
+    <hr />
+    <table class="table table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Hizmet Adı</th>
+                <th>Süre (Dk)</th>
+                <th>Ücret</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Ad</td>
+                    <td>@item.SureDakika dk</td>
+                    <td>@item.Ucret TL</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

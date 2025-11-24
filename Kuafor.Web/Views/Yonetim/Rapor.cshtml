@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Gelir Raporu";
+}
+
+<div class="container mt-5 text-center">
+    <div class="card shadow-lg border-success">
+        <div class="card-header bg-success text-white">
+            <h3>💰 Toplam Gelir Raporu</h3>
+        </div>
+        <div class="card-body p-5">
+            <h5 class="card-title text-muted">Onaylanmış Randevulardan Elde Edilen Toplam Tutar</h5>
+
+            <h1 class="display-1 text-success fw-bold my-4">
+                @ViewBag.Gelir <span class="fs-4 text-dark">TL</span>
+            </h1>
+
+            <p class="card-text">Bu tutar, sadece durumu "Onaylandı" olan randevuların toplamıdır.</p>
+            <a href="/Yonetim/Index" class="btn btn-outline-secondary mt-3">⬅ Yönetim Paneline Dön</a>
+        </div>
+    </div>
+</div>

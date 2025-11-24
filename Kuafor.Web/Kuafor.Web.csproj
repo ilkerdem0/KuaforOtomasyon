@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kuafor.Business\Kuafor.Business.csproj" />
+    <ProjectReference Include="..\Kuafor.Core\Kuafor.Core.csproj" />
+    <ProjectReference Include="..\Kuafor.DataAccess\Kuafor.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>

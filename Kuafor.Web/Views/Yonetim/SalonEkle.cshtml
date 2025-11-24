@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Yeni Salon Ekle";
+}
+<div class="container mt-5">
+    <h2>🏢 Yeni Salon Ekle</h2>
+    <hr />
+    <form asp-action="SalonEkle" method="post" class="card p-4 shadow-sm">
+        <div class="mb-3">
+            <label>Salon Adı</label>
+            <input type="text" name="ad" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Adres</label>
+            <input type="text" name="adres" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Çalışma Saatleri</label>
+            <input type="text" name="calismaSaatleri" class="form-control" placeholder="09:00 - 18:00" />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Kaydet</button>
+    </form>
+</div>

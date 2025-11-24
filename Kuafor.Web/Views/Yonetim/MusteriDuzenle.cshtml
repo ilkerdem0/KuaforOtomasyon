@@ -1,0 +1,42 @@
+﻿@model Kuafor.Core.Musteri
+@{
+    ViewData["Title"] = "Müşteri Düzenle";
+}
+
+<div class="container mt-5">
+    <h2>✏️ Müşteri Bilgilerini Düzenle</h2>
+    <hr />
+    <form asp-action="MusteriDuzenle" method="post" class="card p-4 shadow-sm">
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <div class="row mb-3">
+            <div class="col">
+                <label>Ad</label>
+                <input type="text" name="ad" value="@Model.Ad" class="form-control" required />
+            </div>
+            <div class="col">
+                <label>Soyad</label>
+                <input type="text" name="soyad" value="@Model.Soyad" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>E-Posta</label>
+            <input type="email" name="email" value="@Model.Email" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Telefon</label>
+            <input type="text" name="telefon" value="@Model.Telefon" class="form-control" />
+        </div>
+
+        <div class="mb-3 border p-3 rounded bg-light">
+            <label class="fw-bold text-danger">🔑 Şifre Değiştir</label>
+            <input type="text" name="yeniSifre" class="form-control" placeholder="Değiştirmek istemiyorsanız boş bırakın" />
+            <small class="text-muted">Buraya değer girerseniz müşterinin şifresi değişecektir.</small>
+
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Değişiklikleri Kaydet</button>
+        <a href="/Yonetim/Musteriler" class="btn btn-secondary w-100 mt-2">İptal</a>
+    </form>
+</div>

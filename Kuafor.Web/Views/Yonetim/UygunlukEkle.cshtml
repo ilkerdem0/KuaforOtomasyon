@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Mesai Ekle";
+}
+<div class="container mt-5">
+    <h2>🕒 Çalışan Mesai Ekle</h2>
+    <form asp-action="UygunlukEkle" method="post" class="card p-4 shadow-sm">
+        <div class="mb-3"><label>Çalışan ID</label><input type="number" name="calisanId" class="form-control" required /></div>
+        <div class="mb-3">
+            <label>Gün (0=Pazar, 1=Pazartesi...)</label>
+            <select name="gun" class="form-select">
+                <option value="1">Pazartesi</option>
+                <option value="2">Salı</option>
+                <option value="3">Çarşamba</option>
+                <option value="4">Perşembe</option>
+                <option value="5">Cuma</option>
+                <option value="6">Cumartesi</option>
+                <option value="0">Pazar</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-6"><label>Başlangıç</label><input type="time" name="baslangicSaati" class="form-control" required /></div>
+            <div class="col-6"><label>Bitiş</label><input type="time" name="bitisSaati" class="form-control" required /></div>
+        </div>
+        <button type="submit" class="btn btn-warning w-100 mt-3">Kaydet</button>
+    </form>
+</div>

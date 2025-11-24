@@ -1,0 +1,146 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giriş Yap - Kuaför Sistemi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-card {
+            width: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: #6c757d;
+            font-weight: 600;
+            padding: 15px;
+            border-radius: 0;
+        }
+
+            .nav-tabs .nav-link.active {
+                color: #0d6efd;
+                border-bottom: 3px solid #0d6efd;
+                background: none;
+            }
+
+        .tab-content {
+            padding: 30px;
+        }
+
+        .form-control {
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .btn {
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .logo-area {
+            text-align: center;
+            padding: 20px 0;
+            background: #0d6efd;
+            color: white;
+        }
+
+        .forgot-pass-link {
+            font-size: 0.9em;
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+            .forgot-pass-link:hover {
+                color: #0d6efd;
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="logo-area">
+            <h3>✂️ Kuaför Otomasyonu</h3>
+            <p class="mb-0">Hoşgeldiniz</p>
+        </div>
+
+        <ul class="nav nav-tabs nav-fill" id="loginTab" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" id="musteri-tab" data-bs-toggle="tab" data-bs-target="#musteri" type="button">👤 Müşteri</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="kayit-tab" data-bs-toggle="tab" data-bs-target="#kayit" type="button">📝 Kayıt Ol</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link text-danger" id="yonetim-tab" data-bs-toggle="tab" data-bs-target="#yonetim" type="button">🛠 Yönetim</button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            @if (ViewBag.Hata != null)
+            {
+                <div class="alert alert-danger text-center">@ViewBag.Hata</div>
+            }
+            @if (ViewBag.Mesaj != null)
+            {
+                <div class="alert alert-success text-center">@ViewBag.Mesaj</div>
+            }
+
+            <div class="tab-pane fade show active" id="musteri">
+                <form asp-action="GirisYap" method="post">
+                    <div class="mb-3"><input type="email" name="email" class="form-control" placeholder="E-Posta" required /></div>
+                    <div class="mb-3"><input type="password" name="sifre" class="form-control" placeholder="Şifre" required /></div>
+                    <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                </form>
+                <div class="text-end mt-3"><a href="/Auth/SifremiUnuttum" class="forgot-pass-link">Şifremi Unuttum?</a></div>
+            </div>
+
+            <div class="tab-pane fade" id="kayit">
+                <form asp-action="KayitOl" method="post">
+                    <div class="row mb-2">
+                        <div class="col"><input type="text" name="ad" class="form-control" placeholder="Ad" required /></div>
+                        <div class="col"><input type="text" name="soyad" class="form-control" placeholder="Soyad" required /></div>
+                    </div>
+                    <div class="mb-2"><input type="email" name="email" class="form-control" placeholder="E-Posta" required /></div>
+                    <div class="mb-2"><input type="text" name="telefon" class="form-control" placeholder="Telefon" required /></div>
+                    <div class="mb-3"><input type="password" name="sifre" class="form-control" placeholder="Şifre" required /></div>
+                    <button type="submit" class="btn btn-success w-100">Hemen Kayıt Ol</button>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="yonetim">
+                <div class="alert alert-light text-center small">Sadece yetkili personel içindir.</div>
+                <form asp-action="GirisYap" method="post">
+                    <div class="mb-3"><input type="text" name="email" class="form-control" placeholder="Kullanıcı Adı" required /></div>
+                    <div class="mb-3"><input type="password" name="sifre" class="form-control" placeholder="Şifre" required /></div>
+                    <button type="submit" class="btn btn-danger w-100">Yönetici Girişi</button>
+                </form>
+                <div class="text-end mt-3"><a href="/Auth/SifremiUnuttum" class="forgot-pass-link">Şifremi Unuttum?</a></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

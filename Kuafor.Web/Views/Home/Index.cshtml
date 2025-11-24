@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-3">✂️ Kuaför Otomasyonu</h1>
+    <p class="lead">Randevularınızı kolayca yönetin, zaman kazanın.</p>
+    <hr class="my-4">
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Müşteri Girişi</h3>
+                    <p class="card-text">Yeni randevu almak veya hizmetlerimizi incelemek için tıklayın.</p>
+                    <a asp-controller="Randevu" asp-action="Al" class="btn btn-primary btn-lg w-100">📅 Randevu Al</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card shadow h-100 border-danger">
+                <div class="card-body">
+                    <h3 class="card-title text-danger">Yönetici Paneli</h3>
+                    <p class="card-text">Randevuları onaylamak, personel ve hizmet yönetimi yapmak için tıklayın.</p>
+                    <a asp-controller="Yonetim" asp-action="Index" class="btn btn-outline-danger btn-lg w-100">🛠 Yönetim Paneline Git</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

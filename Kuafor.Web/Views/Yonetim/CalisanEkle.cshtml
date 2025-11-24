@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Yeni Çalışan Ekle";
+}
+<div class="container mt-5">
+    <h2>👨‍💼 Yeni Çalışan Ekle</h2>
+    <hr />
+    <form asp-action="CalisanEkle" method="post" class="card p-4 shadow-sm">
+        <div class="row">
+            <div class="col-md-6 mb-3"><label>Ad</label><input type="text" name="ad" class="form-control" required /></div>
+            <div class="col-md-6 mb-3"><label>Soyad</label><input type="text" name="soyad" class="form-control" required /></div>
+        </div>
+        <div class="mb-3"><label>Email</label><input type="email" name="email" class="form-control" required /></div>
+        <div class="mb-3"><label>Telefon</label><input type="text" name="telefon" class="form-control" required /></div>
+        <div class="mb-3"><label>Salon ID</label><input type="number" name="salonId" class="form-control" required /></div>
+        <div class="mb-3"><label>Uzmanlık Hizmet ID (Tek)</label><input type="number" name="uzmanlikHizmetIdleri[0]" class="form-control" /></div>
+        <button type="submit" class="btn btn-success w-100">Kaydet</button>
+    </form>
+</div>

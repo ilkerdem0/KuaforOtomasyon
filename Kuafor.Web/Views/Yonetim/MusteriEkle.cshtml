@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Yeni Müşteri Ekle";
+}
+
+<div class="container mt-5">
+    <h2>👥 Yeni Müşteri Kaydı</h2>
+    <hr />
+    <form asp-action="MusteriEkle" method="post" class="card p-4 shadow-sm">
+        <div class="row mb-3">
+            <div class="col">
+                <label>Ad</label>
+                <input type="text" name="ad" class="form-control" required />
+            </div>
+            <div class="col">
+                <label>Soyad</label>
+                <input type="text" name="soyad" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>E-Posta</label>
+            <input type="email" name="email" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Telefon</label>
+            <input type="text" name="telefon" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Şifre</label>
+            <input type="text" name="sifre" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Müşteriyi Kaydet</button>
+        <a href="/Yonetim/Musteriler" class="btn btn-secondary w-100 mt-2">İptal</a>
+    </form>
+</div>

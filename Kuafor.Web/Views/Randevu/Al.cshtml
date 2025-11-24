@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Randevu Al";
+}
+
+<div class="container mt-5">
+    <h2>📅 Randevu Al</h2>
+
+    @if (ViewBag.HataMesaji != null)
+    {
+        <div class="alert alert-danger">
+            ⚠️ @ViewBag.HataMesaji
+        </div>
+    }
+
+    <form asp-action="Al" method="post" class="card p-4 shadow-sm bg-light">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Müşteri ID</label>
+                <input type="number" name="musteriId" class="form-control" required />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Çalışan ID</label>
+                <input type="number" name="calisanId" class="form-control" required />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Hizmet ID</label>
+                <input type="number" name="hizmetId" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Tarih ve Saat</label>
+            <input type="datetime-local" name="tarih" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Randevuyu Onayla</button>
+    </form>
+</div>
