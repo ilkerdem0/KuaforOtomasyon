@@ -1,46 +1,38 @@
-﻿# Kuaför / Berber Randevu Otomasyon Sistemi (Seçenek A)
+﻿# ✂️ Kuaför & Berber Randevu Otomasyon Sistemi
 
-Bu proje, **Nesneye Dayalı Programlama (OOP)** dersi kapsamında geliştirilmiş; çoklu şube desteğine sahip, ölçeklenebilir ve katmanlı mimariye uygun bir randevu yönetim sistemidir.
+![.NET 8](https://img.shields.io/badge/.NET-8.0-purple?style=flat&logo=dotnet)
+![Bootstrap 5](https://img.shields.io/badge/Frontend-Bootstrap%205-blue?style=flat&logo=bootstrap)
+![EF Core](https://img.shields.io/badge/ORM-EF%20Core%208-green?style=flat)
+![Status](https://img.shields.io/badge/Durum-Aktif-success)
 
-## 🎯 Proje Özeti
-Proje, müşterilerin kuaför/berber salonlarından randevu almasını, yöneticilerin ise salon, çalışan ve hizmet yönetimini yapmasını sağlayan bir Backend API projesidir. "Code-First" yaklaşımı ile geliştirilmiş olup, karmaşık iş mantıklarını (çakışma kontrolü, mesai kontrolü) barındırır.
+Bu proje, **Nesneye Dayalı Programlama (OOP)** prensipleri ve **N-Katmanlı Mimari (N-Layer Architecture)** kullanılarak geliştirilmiş, ölçeklenebilir bir randevu yönetim sistemidir. Müşterilerin modern bir arayüz ile kolayca randevu almasını, işletme sahiplerinin ise personel, hizmet ve gelir takibini yapmasını sağlar.
 
-## 🛠 Kullanılan Teknolojiler ve Mimari
-* **Platform:** .NET 8 (Core)
+## 🚀 Proje Hakkında
+
+Proje, **Code-First** yaklaşımı ile geliştirilmiş olup, arka planda güçlü bir mimari ile çalışırken, ön yüzde **Bootstrap 5** ile güçlendirilmiş kullanıcı dostu (UI/UX) bir deneyim sunar.
+
+### 🌟 Sürüm 2.0 Yenilikleri
+* **Modern Landing Page:** Kullanıcıları karşılayan şık, responsive ve profesyonel ana sayfa tasarımı.
+* **Adım Adım Randevu (Wizard):** Karmaşadan uzak; Hizmet Seçimi -> Personel Seçimi -> Onay akışı.
+* **Akıllı Görsel Kartlar:** Hizmet türüne göre (Saç, Sakal, Bakım vb.) otomatik değişen dinamik ikonlar.
+* **Kullanıcı Dostu Seçimler:** Müşteriler personel ID'si girmek zorunda kalmadan, açılır listeden (Dropdown) isim ile uzman seçebilir.
+
+---
+
+## 🏗 Mimari ve Teknolojiler
+
+Proje endüstri standartlarına uygun olarak **4 Ana Katman** üzerine inşa edilmiştir:
+
+| Katman | Açıklama |
+| :--- | :--- |
+| **1. Kuafor.Core** | Varlıklar (Entities), DTO'lar ve Arayüzler (Interfaces). Bağımsız katmandır. |
+| **2. Kuafor.DataAccess** | Veritabanı bağlamı (`DbContext`), Migrations ve Repository desenleri. |
+| **3. Kuafor.Business** | İş kuralları (Validasyonlar, Çakışma kontrolleri, Servisler). |
+| **4. Kuafor.Web** | Kullanıcı arayüzü (MVC), Controller yapıları ve View katmanı. |
+
+### 🛠 Teknik Yığın (Tech Stack)
+* **Backend:** C# .NET 8, ASP.NET Core MVC
 * **Veritabanı:** MS SQL Server
 * **ORM:** Entity Framework Core 8 (Code-First)
-* **Mimari:** N-Katmanlı Mimari (N-Layer Architecture)
-* **Dokümantasyon:** Swagger UI
-
-### Mimari Yapı
-Proje 4 ana katmandan oluşur:
-1. **Core:** Varlıklar (Entities), DTO'lar ve Enum'lar. (Bağımsız Katman)
-2. **DataAccess:** Veritabanı bağlantısı (`DbContext`) ve Migrations.
-3. **Business:** İş mantığı, validasyonlar ve servisler (`RandevuService`, `YonetimService`).
-4. **API:** Dış dünyaya açılan RESTful Endpoint'ler (Controllers).
-
-## ⚙️ Temel Özellikler (Gereksinimler)
-
-### 1. Nesneye Dayalı Tasarım (OOP)
-* **Kalıtım (Inheritance):** `Musteri`, `Calisan` ve `Yonetici` sınıfları, ortak özellikleri barındıran soyut `Kullanici` sınıfından türetilmiştir.
-* **Kapsülleme (Encapsulation):** Veritabanı erişimi ve iş mantığı, API katmanından gizlenerek Servis katmanında kapsüllenmiştir.
-* **İlişkiler:** Tablolar arası Bire-Çok ve Çoka-Çok (Many-to-Many) ilişkiler kurulmuştur (Örn: Çalışan ve Uzmanlık Alanları).
-
-### 2. Randevu Sistemi ve Algoritmalar
-* **Çakışma Kontrolü:** Sistem, yeni randevu oluşturulurken çalışanın mevcut randevularını kontrol eder ve zaman çakışması varsa işlemi engeller.
-* **Mesai/Uygunluk Kontrolü:** Çalışanların sadece tanımlı olduğu gün ve saatlerde randevu alması sağlanır.
-* **Filtreleme:** Müşteriler kendi randevu geçmişlerini görüntüleyebilir.
-
-### 3. Yönetim Paneli (Admin)
-* **Salon Yönetimi:** Yeni şube/salon ekleme ve listeleme.
-* **Hizmet Yönetimi:** İşlem (Saç Kesimi, Boya vb.), süre ve ücret tanımlama.
-* **Personel Yönetimi:** Çalışan ekleme ve çalışana uzmanlık alanı (Hizmet) atama.
-* **Raporlama:** Onaylanmış randevular üzerinden toplam gelir hesaplama.
-
-## 🚀 Kurulum ve Çalıştırma
-
-1. Projeyi klonlayın.
-2. `Kuafor.API` içindeki `appsettings.json` dosyasındaki `ConnectionStrings` alanını kendi SQL Server bilginize göre düzenleyin.
-3. **Package Manager Console** üzerinden veritabanını oluşturun:
-   ```powershell
-   Update-Database
+* **Frontend:** HTML5, CSS3, Bootstrap 5, JavaScript (jQuery), FontAwesome
+* **Prensipler
